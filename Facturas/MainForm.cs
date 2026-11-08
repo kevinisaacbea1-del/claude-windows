@@ -247,6 +247,8 @@ namespace Facturas
             p.Controls.Add(lblFolder);
             p.Controls.Add(btnFolder);
             p.Controls.Add(btnOpenFolder);
+            lblSaved = new Label { AutoSize = true, ForeColor = Muted, Margin = new Padding(S(14), S(6), 0, 0) };
+            p.Controls.Add(lblSaved);
             return p;
         }
 
@@ -385,7 +387,7 @@ namespace Facturas
         private Control BuildInvoicePanel()
         {
             var outer = new Panel { Dock = DockStyle.Fill, Padding = new Padding(S(8), S(14), S(16), S(14)) };
-            var sheet = new Panel { Dock = DockStyle.Fill, BackColor = Color.White, Padding = new Padding(S(20)) };
+            var sheet = new Panel { Dock = DockStyle.Fill, BackColor = Color.White, Padding = new Padding(S(20), S(12), S(20), S(12)) };
 
             // campos
             tbNumber = new TextBox();
@@ -398,11 +400,11 @@ namespace Facturas
             tbAddress = new TextBox();
             fldPaid = Field("Fecha de pago", dtPaid);
 
-            var row1 = Row(60, Field("Factura No.", tbNumber), Field("Fecha", dtDate), Field("Estado", cbStatus), fldPaid);
-            var row2 = Row(60, Field("Cliente", tbClient), Field("RTN / NIT", tbTax), Field("Dirección", tbAddress));
+            var row1 = Row(54,Field("Factura No.", tbNumber), Field("Fecha", dtDate), Field("Estado", cbStatus), fldPaid);
+            var row2 = Row(54,Field("Cliente", tbClient), Field("RTN / NIT", tbTax), Field("Dirección", tbAddress));
 
             // cabecera
-            var head = new Panel { Dock = DockStyle.Top, Height = S(58) };
+            var head = new Panel { Dock = DockStyle.Top, Height = S(50) };
             var line = new Panel { Dock = DockStyle.Bottom, Height = S(3), BackColor = Navy };
             lblHdrNo = new Label
             {
@@ -427,14 +429,14 @@ namespace Facturas
             // tabla de líneas
             grid = BuildGrid();
 
-            var lineBtns = new FlowLayoutPanel { Dock = DockStyle.Bottom, Height = S(44), Padding = new Padding(0, S(6), 0, 0) };
+            var lineBtns = new FlowLayoutPanel { Dock = DockStyle.Bottom, Height = S(42),Padding = new Padding(0, S(6), 0, 0) };
             btnAddLine = MakeBtn("+ Agregar línea", false, false);
             btnDelLine = MakeBtn("Quitar línea seleccionada", false, false);
             lineBtns.Controls.Add(btnAddLine);
             lineBtns.Controls.Add(btnDelLine);
 
             // notas y totales
-            var bottom = new Panel { Dock = DockStyle.Bottom, Height = S(170) };
+            var bottom = new Panel { Dock = DockStyle.Bottom, Height = S(122) };
             tbNotes = new TextBox { Multiline = true, ScrollBars = ScrollBars.Vertical, Dock = DockStyle.Fill };
             var notesPanel = new Panel { Dock = DockStyle.Fill, Padding = new Padding(0, 0, S(16), 0) };
             notesPanel.Controls.Add(tbNotes);
@@ -450,8 +452,8 @@ namespace Facturas
             var totals = new TableLayoutPanel { Dock = DockStyle.Right, Width = S(340), ColumnCount = 2, RowCount = 4 };
             totals.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 55));
             totals.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 45));
-            for (int i = 0; i < 3; i++) totals.RowStyles.Add(new RowStyle(SizeType.Absolute, S(34)));
-            totals.RowStyles.Add(new RowStyle(SizeType.Absolute, S(48)));
+            for (int i = 0; i < 3; i++) totals.RowStyles.Add(new RowStyle(SizeType.Absolute, S(26)));
+            totals.RowStyles.Add(new RowStyle(SizeType.Absolute, S(42)));
 
             Label TL(string t) { return new Label { Text = t, Dock = DockStyle.Fill, TextAlign = ContentAlignment.MiddleRight, ForeColor = Muted, Font = new Font("Segoe UI", 9.5f, FontStyle.Bold) }; }
             Label TV() { return new Label { Dock = DockStyle.Fill, TextAlign = ContentAlignment.MiddleRight, Font = new Font("Segoe UI", 10f, FontStyle.Bold), Padding = new Padding(0, 0, S(8), 0) }; }
@@ -459,7 +461,7 @@ namespace Facturas
             lblSub = TV();
             lblDisc = TV();
             tbDiscount = new TextBox { Width = S(60), TextAlign = HorizontalAlignment.Right, BackColor = Cell };
-            var pct = new FlowLayoutPanel { Dock = DockStyle.Fill, FlowDirection = FlowDirection.RightToLeft, WrapContents = false, Padding = new Padding(0, S(4), S(8), 0) };
+            var pct = new FlowLayoutPanel { Dock = DockStyle.Fill, FlowDirection = FlowDirection.RightToLeft, WrapContents = false, Padding = new Padding(0, S(1), S(8), 0) };
             pct.Controls.Add(new Label { Text = "%", AutoSize = true, Margin = new Padding(S(2), S(3), 0, 0) });
             pct.Controls.Add(tbDiscount);
 
@@ -495,9 +497,7 @@ namespace Facturas
             btnSaveImg = MakeBtn("Guardar imagen", false, false);
             btnDel = MakeBtn("Eliminar", false, true);
             tools.Controls.AddRange(new Control[] { btnNew, btnDup, btnPrint, btnCopyImg, btnSaveImg, btnDel });
-            lblSaved = new Label { Dock = DockStyle.Right, Width = S(250), TextAlign = ContentAlignment.MiddleRight, ForeColor = Muted };
             toolbar.Controls.Add(tools);
-            toolbar.Controls.Add(lblSaved);
 
             outer.Controls.Add(sheet);
             outer.Controls.Add(toolbar);
@@ -524,7 +524,7 @@ namespace Facturas
                 GridColor = LineC,
                 CellBorderStyle = DataGridViewCellBorderStyle.SingleHorizontal
             };
-            g.RowTemplate.Height = S(30);
+            g.RowTemplate.Height = S(28);
             g.ColumnHeadersDefaultCellStyle = new DataGridViewCellStyle
             {
                 BackColor = Navy,
